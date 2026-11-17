@@ -1,0 +1,1477 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Examen Final Interactivo - Maestría en Sistemas de Información e Investigación en Marketing</title>
+    <style>
+        :root {
+            --primary: #1e3a8a;
+            --primary-dark: #1e40af;
+            --accent: #2563eb;
+            --success: #16a34a;
+            --error: #dc2626;
+            --warning: #d97706;
+            --bg-main: #f8fafc;
+            --bg-card: #ffffff;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --border: #cbd5e1;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            line-height: 1.6;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            color: white;
+            padding: 2rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        header h1 {
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+        }
+
+        header p {
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+
+        .card {
+            background: var(--bg-card);
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            margin-bottom: 1.5rem;
+        }
+
+        .rules-box {
+            background: #e2e8f0;
+            border-left: 4px solid var(--accent);
+            padding: 1rem 1.5rem;
+            margin-bottom: 1.5rem;
+            border-radius: 4px;
+        }
+
+        .rules-box h3 {
+            margin-bottom: 0.5rem;
+            color: var(--primary);
+        }
+
+        .rules-box ul {
+            margin-left: 1.5rem;
+            font-size: 0.95rem;
+        }
+
+        .btn {
+            background-color: var(--accent);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.1s;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .btn:hover {
+            background-color: var(--primary-dark);
+        }
+
+        .btn:active {
+            transform: scale(0.98);
+        }
+
+        .btn-success {
+            background-color: var(--success);
+        }
+
+        .btn-success:hover {
+            background-color: #15803d;
+        }
+
+        .btn-secondary {
+            background-color: #475569;
+        }
+
+        .btn-secondary:hover {
+            background-color: #334155;
+        }
+
+        /* Question Styles */
+        .question-card {
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            background: white;
+            transition: border-color 0.2s;
+        }
+
+        .question-card.answered {
+            border-color: #93c5fd;
+        }
+
+        .question-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            border-bottom: 1px solid #f1f5f9;
+            padding-bottom: 0.5rem;
+        }
+
+        .badge {
+            padding: 0.2rem 0.6rem;
+            border-radius: 9999px;
+            font-weight: 600;
+            font-size: 0.75rem;
+        }
+
+        .badge-tema { background: #e0f2fe; color: #0369a1; }
+        .badge-dif { background: #fef3c7; color: #92400e; }
+        .badge-tipo { background: #f1f5f9; color: #475569; }
+
+        .question-text {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--text-main);
+        }
+
+        .options-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .option-label {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+            padding: 0.75rem 1rem;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.2s, border-color 0.2s;
+            font-size: 0.95rem;
+        }
+
+        .option-label:hover {
+            background-color: #f8fafc;
+            border-color: var(--accent);
+        }
+
+        .option-label input {
+            margin-top: 0.2rem;
+            cursor: pointer;
+        }
+
+        /* Results & Feedback Styles */
+        .feedback-box {
+            margin-top: 1rem;
+            padding: 1rem;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            display: none;
+        }
+
+        .feedback-box.correct {
+            background-color: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            color: #166534;
+        }
+
+        .feedback-box.incorrect {
+            background-color: #fef2f2;
+            border: 1px solid #fecaca;
+            color: #991b1b;
+        }
+
+        .question-card.result-correct {
+            border-color: var(--success);
+            background-color: #fcfdfd;
+        }
+
+        .question-card.result-incorrect {
+            border-color: var(--error);
+            background-color: #fffefd;
+        }
+
+        /* Summary Dashboard */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: #f8fafc;
+            border: 1px solid var(--border);
+            padding: 1.25rem;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .stat-card h4 {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-card .value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .topic-breakdown {
+            margin-top: 1.5rem;
+        }
+
+        .topic-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #f1f5f9;
+            font-size: 0.95rem;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .nav-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .progress-indicator {
+            font-weight: 600;
+            color: var(--text-muted);
+        }
+
+        @media (max-width: 600px) {
+            body { padding: 10px; }
+            header { padding: 1.5rem; }
+            .card { padding: 1rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Simulador de Examen Final - Maestría</h1>
+            <p>Sistemas de Información e Investigación en Marketing</p>
+        </header>
+
+        <!-- VIEW 1: START SCREEN -->
+        <div id="start-view" class="card">
+            <h2>Instrucciones y Criterios de Evaluación</h2>
+            <br>
+            <div class="rules-box">
+                <h3>Reglas del Examen</h3>
+                <ul>
+                    <li><strong>Estructura:</strong> El sistema genera un examen aleatorio de <strong>20 preguntas</strong> seleccionadas de un banco experto de 60 reactivos basados en los microtests y materiales del curso.</li>
+                    <li><strong>Tipología:</strong> Encontrarás preguntas de <em>Respuesta Única</em> (botón de radio) y de <em>Respuesta Múltiple</em> (casillas de verificación). Se indicará explícitamente en cada enunciado.</li>
+                    <li><strong>Sistema de Calificación:</strong> 
+                        <ul>
+                            <li>Todas las preguntas tienen el mismo valor numérico.</li>
+                            <li>En las preguntas de respuesta múltiple, la puntuación se otorga únicamente si se seleccionan <em>todas las opciones correctas y ninguna incorrecta</em>.</li>
+                            <li>No existe penalización adicional por errores; las preguntas sin responder computan como incorrectas.</li>
+                            <li>La nota final se presenta sobre 10 y en porcentaje de aciertos.</li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <button class="btn" id="start-btn" onclick="startExam()">Comenzar Examen</button>
+        </div>
+
+        <!-- VIEW 2: EXAM QUIZ SCREEN -->
+        <div id="quiz-view" class="hidden">
+            <div class="card">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                    <h3>Evaluación en Curso</h3>
+                    <div class="progress-indicator" id="progress-counter">Respondidas: 0 / 20</div>
+                </div>
+                <div id="questions-container">
+                    <!-- Dynamic Questions injected here -->
+                </div>
+                <div class="nav-footer">
+                    <span id="unanswered-warning" style="color: var(--warning); font-size: 0.9rem; font-weight: 600;"></span>
+                    <button class="btn btn-success" onclick="confirmSubmit()">Enviar Examen</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- VIEW 3: RESULTS SCREEN -->
+        <div id="results-view" class="hidden">
+            <div class="card">
+                <h2>Resultados de la Evaluación</h2>
+                <p style="color: var(--text-muted); margin-bottom: 1.5rem;">Revisión detallada de aciertos, soluciones explicadas y desglose temático para tu repaso.</p>
+                
+                <div class="dashboard-grid">
+                    <div class="stat-card">
+                        <h4>Calificación Final</h4>
+                        <div class="value" id="res-score">0.0 / 10</div>
+                    </div>
+                    <div class="stat-card">
+                        <h4>Porcentaje de Aciertos</h4>
+                        <div class="value" id="res-percent">0%</div>
+                    </div>
+                    <div class="stat-card">
+                        <h4>Correctas / Totales</h4>
+                        <div class="value" id="res-counts">0 / 20</div>
+                    </div>
+                </div>
+
+                <h3>Desempeño por Tema</h3>
+                <div class="topic-breakdown" id="topic-breakdown-container">
+                    <!-- Dynamic Topic Breakdown -->
+                </div>
+
+                <h3 style="margin-top: 2rem; margin-bottom: 1rem;">Revisión de Reactivos</h3>
+                <div id="review-container">
+                    <!-- Dynamic Review Cards -->
+                </div>
+
+                <div style="text-align: center; margin-top: 2rem;">
+                    <button class="btn" onclick="generateNewExam()">Generar Nuevo Examen</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // MASTER QUESTION BANK (60 Professional Graduate-level Questions covering all 5 course topics)
+        const questionBank = [
+            // TEMA 1: SISTEMAS DE INFORMACIÓN COMERCIAL Y SIM
+            {
+                id: "T1_Q1",
+                tema: "Tema 1: Sistemas de Información",
+                dificultad: "Aplicación",
+                tipo: "unica",
+                enunciado: "¿Cuál de las siguientes funciones principales de un Sistema de Información de Marketing (SIM) permite a la dirección automatizar los flujos operativos básicos y reaccionar ágilmente ante las necesidades cambiantes del mercado?",
+                opciones: [
+                    "Apoyo en la ventaja competitiva mediante disrupción tecnológica pura.",
+                    "Apoyo a los procesos de negocio mediante la automatización de operaciones comerciales.",
+                    "Sustitución integral de la investigación primaria de mercados por bases de datos internas.",
+                    "Generación exclusiva de informes contables estáticos para auditoría financiera."
+                ],
+                correctas: [1],
+                explicacion: "Los sistemas de información apoyan el diseño y ejecución de procesos operativos comerciales buscando automatizarlos para volverlos más eficientes frente a las necesidades de los consumidores.",
+                fuente: "Tema 1 - Ideas Clave y Materiales del Curso",
+                origen: "Microtest Tema 1"
+            },
+            {
+                id: "T1_Q2",
+                tema: "Tema 1: Sistemas de Información",
+                dificultad: "Comprensión",
+                tipo: "multiple",
+                enunciado: "Seleccione las funciones esenciales que los sistemas de información cumplen dentro de una empresa orientada al marketing estratégico: (Seleccione todas las opciones correctas)",
+                opciones: [
+                    "Apoyo a los procesos de negocio y operaciones comerciales.",
+                    "Apoyo directo en la toma de decisiones gerenciales y de marketing.",
+                    "Apoyo en la obtención y mantenimiento de una ventaja competitiva.",
+                    "Eliminación total del riesgo normativo y regulatorio sectorial."
+                ],
+                correctas: [0, 1, 2],
+                explicacion: "Para la empresa, los sistemas de información cumplen tres funciones esenciales: apoyo a los procesos de negocio, apoyo en la toma de decisiones y apoyo en la ventaja competitiva a través de decisiones tecnológicas innovadoras.",
+                fuente: "Tema 1 - Esquema y Apuntes de Clase",
+                origen: "Adaptada de Materiales"
+            },
+            {
+                id: "T1_Q3",
+                tema: "Tema 1: Sistemas de Información",
+                dificultad: "Análisis",
+                tipo: "unica",
+                enunciado: "¿Cómo se clasifican estructuralmente los sistemas de apoyo a las operaciones dentro de la arquitectura de sistemas de información comercial?",
+                opciones: [
+                    "Sistemas de Información Gerencial, Sistemas de Información Ejecutiva y Sistemas de Apoyo a Decisiones.",
+                    "Sistemas de Procesamiento de Transacciones, Sistemas de Control de Procesos y Sistemas de Colaboración Empresarial.",
+                    "Sistemas de Análisis Multivariante de Dependencia y Sistemas de Interdependencia.",
+                    "Sistemas de Auditoría Externa y Sistemas de Vigilancia Netnográfica."
+                ],
+                correctas: [1],
+                explicacion: "La taxonomía de sistemas de apoyo a las operaciones incluye específicamente el procesamiento de transacciones, control de procesos y colaboración empresarial, diferenciándose de los sistemas de apoyo administrativo (gerencial, ejecutiva, decisiones).",
+                fuente: "Tema 1 - Esquema de Sistemas de Información",
+                origen: "Microtest Tema 1"
+            },
+            {
+                id: "T1_Q4",
+                tema: "Tema 1: Sistemas de Información",
+                dificultad: "Comprensión",
+                tipo: "unica",
+                enunciado: "Dentro del análisis de la estructura piramidal de apoyo administrativo, ¿qué tipo de sistema está diseñado específicamente para satisfacer las necesidades de información estratégica de la alta dirección ejecutiva?",
+                opciones: [
+                    "Sistema de Procesamiento de Transacciones (SPT).",
+                    "Sistema de Información Ejecutiva (SIE).",
+                    "Sistema de Colaboración Empresarial.",
+                    "Sistema de Control de Procesos operativos."
+                ],
+                correctas: [1],
+                explicacion: "Los Sistemas de Información Ejecutiva (SIE) se encuentran en la cúspide del apoyo administrativo junto con los sistemas de información gerencial y de apoyo a decisiones, orientados a la alta dirección.",
+                fuente: "Tema 1 - Ideas Clave",
+                origen: "Elaborada para Maestría"
+            },
+            {
+                id: "T1_Q5",
+                tema: "Tema 1: Sistemas de Información",
+                dificultad: "Aplicación",
+                tipo: "multiple",
+                enunciado: "Indique qué factores pueden provocar que un cambio normativo o legal afecte directamente el funcionamiento de un sistema de información y la comercialización de un producto en el mercado: (Seleccione todas las opciones correctas)",
+                opciones: [
+                    "Modificaciones en las proporciones y normativas de formulación de productos (ej. chocolate o lácteos).",
+                    "Cambios en las directrices sobre protección de datos personales y privacidad del consumidor.",
+                    "Variaciones imprevistas en los tipos de cambio de moneda extranjera bursátil.",
+                    "Aparición de normativas sobre etiquetado y etiquetado nutricional obligatorio."
+                ],
+                correctas: [0, 1, 3],
+                explicacion: "Los cambios normativos afectan la formulación física de los productos y el cumplimiento legal, así como el tratamiento de datos (privacidad). Las variaciones bursátiles de moneda corresponden al entorno macroeconómico financiero, no a modificaciones normativas de producto directo.",
+                fuente: "Tema 1 - Sesiones Síncronas y Notas Teóricas",
+                origen: "Adaptada de Casos de Clase"
+            },
+            {
+                id: "T1_Q6",
+                tema: "Tema 1: Sistemas de Información",
+                dificultad: "Comprensión",
+                tipo: "unica",
+                enunciado: "¿Cuál es el riesgo estratégico principal cuando una empresa con alta confianza en su penetración de mercado desatiende los cambios normativos o la irrupción de un competidor dominante?",
+                opciones: [
+                    "Un incremento inmediato en los costes fijos de almacenamiento logístico.",
+                    "La pérdida súbita de cuota de mercado frente a un competidor fuerte y la obsolescencia normativa del producto.",
+                    "La invalidación automática de las licencias de software del sistema CRM.",
+                    "La reducción de la plantilla de analistas de datos en el departamento comercial."
+                ],
+                correctas: [1],
+                explicacion: "Desatender cambios normativos o competidores fuertes genera la pérdida de posición competitiva y vulnerabilidad legal directa sobre la comercialización del producto.",
+                fuente: "Tema 1 - Debates y Sesiones de Cátedra",
+                origen: "Elaborada para Maestría"
+            },
+            {
+                id: "T1_Q7",
+                tema: "Tema 1: Sistemas de Información",
+                dificultad: "Aplicación",
+                tipo: "unica",
+                enunciado: "Si una empresa de marketing busca recopilar, analizar y distribuir información en tiempo real para facilitar la toma de decisiones operativas inmediatas, ¿qué pilar tecnológico debe optimizar primordialmente?",
+                opciones: [
+                    "Los métodos de recogida y procesamiento seguro de datos operativos.",
+                    "Los archivos físicos de documentación histórica archivística decenal.",
+                    "Las auditorías contables de pasivos a largo plazo.",
+                    "Los contratos de exclusividad con agencias de publicidad exterior impresa."
+                ],
+                correctas: [0],
+                explicacion: "La recogida y análisis oportuno requieren estrategias óptimas de procesamiento y sistemas de información en tiempo real para garantizar que los datos lleguen ágilmente a los decisores adecuados.",
+                fuente: "Tema 1 - Materiales del Curso",
+                origen: "Microtest Tema 1"
+            },
+            {
+                id: "T1_Q8",
+                tema: "Tema 1: Sistemas de Información",
+                dificultad: "Comprensión",
+                tipo: "multiple",
+                enunciado: "Señale las características fundamentales que definen el rol de los sistemas de información en los departamentos de marketing modernos: (Seleccione todas las opciones correctas)",
+                opciones: [
+                    "Sustitución total del juicio directivo humano por algoritmos automáticos.",
+                    "Soporte estructurado para la planificación estratégica y asignación de presupuestos.",
+                    "Mejora en la capacidad de respuesta ante las fluctuaciones del entorno competitivo.",
+                    "Integración de bases de datos de clientes para la segmentación dinámica."
+                ],
+                correctas: [1, 2, 3],
+                explicacion: "Los sistemas de información potencian el juicio directivo, mejoran la respuesta competitiva y facilitan la segmentación mediante CRM y bases de datos; jamás sustituyen por completo el criterio directivo humano.",
+                fuente: "Tema 1 y Tema 2 - Ideas Clave",
+                origen: "Microtest Tema 1"
+            },
+            {
+                id: "T1_Q9",
+                tema: "Tema 1: Sistemas de Información",
+                dificultad: "Análisis",
+                tipo: "unica",
+                enunciado: "¿Cómo contribuye un sistema de información a la generación de una ventaja competitiva sostenible?",
+                opciones: [
+                    "Mediante la adopción sistemática de decisiones tecnológicas innovadoras en el tratamiento y análisis de datos.",
+                    "Mediante la ocultación de los datos operativos frente a los órganos reguladores del Estado.",
+                    "A través de la reducción artificial de los salarios del personal de investigación de mercados.",
+                    "Mediante el uso exclusivo de fuentes de información secundaria pública y gratuita."
+                ],
+                correctas: [0],
+                explicacion: "La ventaja competitiva mediante sistemas de información se logra cuando la empresa destaca por decisiones tecnológicas innovadoras en el tratamiento inteligente de los datos comerciales.",
+                fuente: "Tema 1 - Ideas Clave",
+                origen: "Microtest Tema 1"
+            },
+            {
+                id: "T1_Q10",
+                tema: "Tema 1: Sistemas de Información",
+                dificultad: "Comprensión",
+                tipo: "unica",
+                enunciado: "¿Qué diferencia conceptual existe entre un dato comercial bruto y la información generada en un sistema de marketing?",
+                opciones: [
+                    "El dato es un registro aislado sin contexto; la información es el conjunto de datos procesados y estructurados con utilidad para la decisión.",
+                    "La información es siempre de carácter público y externo; el dato es estrictamente confidencial y financiero.",
+                    "No existe diferencia operativa en el entorno de una maestría en marketing.",
+                    "El dato requiere obligatoriamente una auditoría legal externa antes de ser almacenado."
+                ],
+                correctas: [0],
+                explicacion: "Epistemológicamente, el dato carece de estructura interpretativa inicial, mientras que la información surge del procesamiento sistemático que reduce la incertidumbre directiva.",
+                fuente: "Tema 1 - Notas Teóricas y Metodología",
+                origen: "Elaborada para Maestría"
+            },
+
+            // TEMA 2: PROCESO Y DISEÑO DE INVESTIGACIÓN DE MERCADOS
+            {
+                id: "T2_Q1",
+                tema: "Tema 2: Proceso y Diseño de Investigación",
+                dificultad: "Aplicación",
+                tipo: "unica",
+                enunciado: "Durante la fase inicial de diseño de una investigación comercial, al plantear el alcance del estudio, ¿por qué es indispensable delimitar con precisión la población, las variables y los objetivos?",
+                opciones: [
+                    "Para poder comunicar formalmente a los evaluadores e interesados el límite exacto de hasta dónde abarcó la investigación y evitar sesgos de ambigüedad.",
+                    "Para cumplir estrictamente con los requisitos estéticos de paginación del documento final.",
+                    "Para eliminar por completo la necesidad de calcular el tamaño de la muestra estadística.",
+                    "Para garantizar que la investigación carezca de limitaciones temporales o geográficas."
+                ],
+                correctas: [0],
+                explicacion: "Delimitar objetivos, población, variables y alcance permite declarar con rigor analítico los límites exactos de validez y cobertura de la investigación realizada.",
+                fuente: "Tema 2 - Metodología de Investigación",
+                origen: "Microtest Tema 2"
+            },
+            {
+                id: "T2_Q2",
+                tema: "Tema 2: Proceso y Diseño de Investigación",
+                dificultad: "Comprensión",
+                tipo: "multiple",
+                enunciado: "Señale las características y decisiones clave que se deben tomar al definir las fuentes de información y el diseño en la investigación de mercados: (Seleccione todas las opciones correctas)",
+                opciones: [
+                    "Determinar qué desea conocer exactamente la empresa y de dónde obtendrá los datos.",
+                    "Priorizar qué información se debe buscar en fuentes secundarias antes de incurrir en costes de investigación primaria.",
+                    "Establecer si la investigación adoptará un enfoque transversal (fotografía de un momento) o longitudinal (evolución en el tiempo).",
+                    "Prescindir de la definición de dimensiones en las variables latentes para ganar agilidad."
+                ],
+                correctas: [0, 1, 2],
+                explicacion: "El diseño exige definir necesidades, priorizar fuentes secundarias para optimizar recursos y elegir entre estudios transversales (un solo momento) o longitudinales (múltiples momentos). Las dimensiones de las variables son obligatorias para la construcción de instrumentos.",
+                fuente: "Tema 2 - Ideas Clave y Contenidos",
+                origen: "Microtest Tema 2"
+            },
+            {
+                id: "T2_Q3",
+                tema: "Tema 3: Técnicas de Obtención (Fuentes Primarias y Secundarias)",
+                dificultad: "Comprensión",
+                tipo: "unica",
+                enunciado: "¿Cómo se define conceptualmente la información primaria en el ámbito de la investigación comercial?",
+                opciones: [
+                    "Información original recabada específicamente con un fin definido por la investigación comercial en curso.",
+                    "Datos históricos publicados en bases de datos estadísticas gubernamentales abiertas.",
+                    "Registros contables internos de ventas obtenidos de los estados financieros auditados.",
+                    "Informes elaborados por consultoras internacionales sobre mercados genéricos."
+                ],
+                correctas: [0],
+                explicacion: "La información primaria es aquella de naturaleza original, recopilada ad-hoc para dar respuesta a los objetivos específicos planteados en la investigación comercial actual.",
+                fuente: "Tema 3 - Fuentes de Información",
+                origen: "Microtest Tema 3"
+            },
+            {
+                id: "T2_Q4",
+                tema: "Tema 2: Proceso y Diseño de Investigación",
+                dificultad: "Análisis",
+                tipo: "unica",
+                enunciado: "¿Qué diferencia metodológica fundamental existe entre un estudio de investigación transversal y uno longitudinal?",
+                opciones: [
+                    "El transversal analiza una sola fotografía estática de la población en un momento dado; el longitudinal aplica la misma medición en varios momentos temporales para evaluar evolución, tendencias o estacionalidad.",
+                    "El transversal es exclusivamente cualitativo; el longitudinal es netamente cuantitativo y experimental.",
+                    "El transversal requiere muestras probabilísticas masivas; el longitudinal no requiere ningún tipo de muestreo estadístico.",
+                    "No existe diferencia analítica, siendo términos intercambiables en la literatura de marketing."
+                ],
+                correctas: [0],
+                explicacion: "El estudio transversal captura un corte temporal único (fotografía), mientras que el longitudinal monitoriza la evolución de las variables a lo largo del tiempo (útil para detectar estacionalidad, tendencias o modas).",
+                fuente: "Tema 2 y Tema 3 - Diseños de Investigación",
+                origen: "Microtest Tema 2"
+            },
+            {
+                id: "T2_Q5",
+                tema: "Tema 2: Proceso y Diseño de Investigación",
+                dificultad: "Aplicación",
+                tipo: "multiple",
+                enunciado: "Al planificar la expansión comercial a un país extranjero o un nuevo mercado donde no se poseen datos previos, ¿qué etapas o decisiones lógicas debe seguir el investigador antes de realizar trabajo de campo primario? (Seleccione todas las opciones correctas)",
+                opciones: [
+                    "Buscar información secundaria en internet y bases de datos oficiales o de cámaras de comercio del país de destino.",
+                    "Analizar los datos disponibles de consumo, competencia y canales de distribución existentes en fuentes externas.",
+                    "Estimar si existen precedentes de investigación en mercados análogos o comparables.",
+                    "Omitir el análisis de competencia extranjera para evitar sesgos de confirmación."
+                ],
+                correctas: [0, 1, 2],
+                explicacion: "Ante un nuevo mercado, la prudencia metodológica exige explotar fuentes secundarias (internet, bases de datos oficiales, cámaras de comercio, análisis de competencia y consumo previo) antes de diseñar costes de investigación primaria.",
+                fuente: "Tema 2 - Casos Prácticos y Aplicaciones",
+                origen: "Microtest Tema 2"
+            },
+            {
+                id: "T2_Q6",
+                tema: "Tema 2: Proceso y Diseño de Investigación",
+                dificultad: "Comprensión",
+                tipo: "unica",
+                enunciado: "¿Cuál es el enemigo número uno reconocido en el diseño y ejecución del trabajo de campo dentro de la investigación de mercados?",
+                opciones: [
+                    "El sesgo sistemático o aleatorio.",
+                    "El uso exclusivo de preguntas cerradas en formato Likert.",
+                    "El almacenamiento digital en formato CSV.",
+                    "La utilización de muestreos por cuotas no proporcionales."
+                ],
+                correctas: [0],
+                explicacion: "El sesgo es considerado el enemigo número uno de la investigación, ya que distorsiona la validez de los datos y conclusiones, requiriendo rigurosas fases de prueba y capacitación de encuestadores.",
+                fuente: "Tema 2 y Tema 3 - Trabajo de Campo",
+                origen: "Microtest Tema 2"
+            },
+            {
+                id: "T2_Q7",
+                tema: "Tema 2: Proceso y Diseño de Investigación",
+                dificultad: "Aplicación",
+                tipo: "unica",
+                enunciado: "Si durante el proceso de validación de un instrumento de recogida de datos se realiza un estudio piloto, ¿por qué es altamente recomendable que las 30 o 50 personas que participan en la prueba previa formen parte de un grupo independiente y no de la muestra final definitiva de 300 sujetos?",
+                opciones: [
+                    "Para evitar que el hecho de haber participado en la prueba previa cree sesgos de familiaridad, aprendizaje o percepción alterada al responder la encuesta oficial.",
+                    "Para cumplir con una norma contable internacional de auditoría de muestras.",
+                    "Porque la legislación prohíbe legalmente encuestar dos veces a la misma persona.",
+                    "Para reducir artificialmente el presupuesto asignado a la codificación de datos."
+                ],
+                correctas: [0],
+                explicacion: "Incluir a los sujetos del pretest en la muestra final contamina los resultados, ya que su exposición previa al cuestionario genera sesgos de aprendizaje y familiaridad con el modelo.",
+                fuente: "Tema 2 y Tema 3 - Validación de Instrumentos",
+                origen: "Microtest Tema 2"
+            },
+            {
+                id: "T2_Q8",
+                tema: "Tema 2: Proceso y Diseño de Investigación",
+                dificultad: "Comprensión",
+                tipo: "multiple",
+                enunciado: "Indique las etapas críticas que componen el procesamiento y análisis de la información recogida en una investigación de mercados antes de elaborar el informe final: (Seleccione todas las opciones correctas)",
+                opciones: [
+                    "Revisión de los cuestionarios para corregir posibles errores de campo o erratas.",
+                    "Codificación, clasificación y recopilación asignando valores numéricos a las respuestas.",
+                    "Análisis estadístico univariante, bivariante y multivariante de las variables generadas.",
+                    "Eliminación sistemática de todos los questionnaires con datos perdidos sin verificar su impacto."
+                ],
+                correctas: [0, 1, 2],
+                explicacion: "Las etapas comprenden la revisión de cuestionarios, codificación numérica, y análisis estadístico por fases. Eliminar datos perdidos sin tratamiento analítico previo constituye un error metodológico.",
+                fuente: "Tema 2 y Tema 5 - Análisis de Información",
+                origen: "Microtest Tema 2"
+            },
+            {
+                id: "T2_Q9",
+                tema: "Tema 2: Proceso y Diseño de Investigación",
+                dificultad: "Análisis",
+                tipo: "unica",
+                enunciado: "¿Qué función cumple el proceso de codificación dentro del trabajo de campo de una investigación cuantitativa?",
+                opciones: [
+                    "Asignar un número o valor identificativo a cada una de las posibles respuestas obtenidas para permitir su tratamiento informático y estadístico.",
+                    "Encriptar la base de datos para cumplir con las normativas de secreto industrial frente a la competencia.",
+                    "Traducir las preguntas del cuestionario a idiomas extranjeros para estudios multinacionales.",
+                    "Comprimir el tamaño de los archivos PDF del informe ejecutivo."
+                ],
+                correctas: [0],
+                explicacion: "La codificación transforma las respuestas cualitativas o categóricas en valores numéricos cuantificables para su posterior explotación mediante software estadístico.",
+                fuente: "Tema 3 y Tema 5 - Codificación",
+                origen: "Microtest Tema 2"
+            },
+            {
+                id: "T2_Q10",
+                tema: "Tema 2: Proceso y Diseño de Investigación",
+                dificultad: "Comprensión",
+                tipo: "unica",
+                enunciado: "En el diseño de una investigación comercial, ¿qué implica la exigencia de declarar con claridad el uso de datos, el consentimiento informado y las limitaciones del estudio?",
+                opciones: [
+                    "Garantizar el rigor ético, la transparencia metodológica y la validez de las inferencias presentadas ante los responsables de decisión.",
+                    "Aumentar el número de páginas del informe para cumplir con los estándares tipográficos.",
+                    "Eximir al investigador de cualquier responsabilidad legal ante fallos en las ventas del cliente.",
+                    "Sustituir la necesidad de realizar un análisis factorial confirmatorio."
+                ],
+                correctas: [0],
+                explicacion: "La declaración transparente de consentimiento, uso de datos y limitaciones aporta el rigor ético y metodológico indispensable en la investigación académica y profesional de maestría.",
+                fuente: "Tema 2 y Tema 11 - Ética y Deontología",
+                origen: "Elaborada para Maestría"
+            },
+
+            // TEMA 3: TÉCNICAS DE OBTENCIÓN DE INFORMACIÓN (CUALITATIVAS Y CUANTITATIVAS)
+            {
+                id: "T3_Q1",
+                tema: "Tema 3: Técnicas de Obtención",
+                dificultad: "Comprensión",
+                tipo: "unica",
+                enunciado: "¿Cuál es el objetivo principal y la utilidad fundamental de las técnicas cualitativas de obtención de información en marketing?",
+                opciones: [
+                    "Obtener información sobre motivaciones, comportamientos y actitudes profundas de los consumidores, resultando útiles para generar hipótesis y evaluar viabilidad de nuevos conceptos.",
+                    "Medir con precisión matemática la cuota de mercado exacta y la elasticidad precio de la demanda en millones de hogares.",
+                    "Sustituir de forma definitiva la fase de análisis multivariante en el software SPSS.",
+                    "Calcular el tamaño exacto de la muestra estadística mediante fórmulas probabilísticas."
+                ],
+                correctas: [0],
+                explicacion: "Las técnicas cualitativas buscan comprender el 'por qué' a través de motivaciones y actitudes, sirviendo primordialmente para la generación de hipótesis y validación exploratoria de conceptos.",
+                fuente: "Tema 3 y Tema 4 - Técnicas Cualitativas",
+                origen: "Microtest Tema 3"
+            },
+            {
+                id: "T3_Q2",
+                tema: "Tema 3: Técnicas de Obtención",
+                dificultad: "Aplicación",
+                tipo: "multiple",
+                enunciado: "Indique qué requisitos o habilidades son indispensables para llevar a cabo adecuadamente una sesión de grupos de enfoque (*focus groups*): (Seleccione todas las opciones correctas)",
+                opciones: [
+                    "Flexibilidad para variar las condiciones del grupo si el moderador detecta desviaciones de las expectativas.",
+                    "Sensibilidad para incorporar elementos emocionales además de los aspectos netamente intelectuales.",
+                    "Capacidad del moderador para estimular opiniones y conocimientos expresados libremente.",
+                    "Obligatoriedad de mantener un cuestionario rígido y cerrado sin permitir desviaciones temáticas."
+                ],
+                correctas: [0, 1, 2],
+                explicacion: "Los grupos de enfoque exigen flexibilidad, alta sensibilidad emocional guiada por el moderador y estímulo a la libre expresión. Un cuestionario rígido destruiría la naturaleza abierta y dinámica de la técnica cualitativa.",
+                fuente: "Tema 3 - Dinámicas de Grupo",
+                origen: "Microtest Tema 3"
+            },
+            {
+                id: "T3_Q3",
+                tema: "Tema 3: Técnicas de Obtención",
+                dificultad: "Comprensión",
+                tipo: "unica",
+                enunciado: "¿Cómo se clasifican taxonómicamente las técnicas de investigación cualitativa según su estructura y desarrollo?",
+                opciones: [
+                    "Técnicas directas (individuales y colectivas) y técnicas indirectas.",
+                    "Técnicas probabilísticas y técnicas no probabilísticas de conglomerados.",
+                    "Métodos de dependencia y métodos de interdependencia multivariante.",
+                    "Técnicas univariantes y técnicas paramétricas de Kolmogorov-Smirnov."
+                ],
+                correctas: [0],
+                explicacion: "Metodológicamente, las técnicas cualitativas se estructuran en directas (como entrevistas en profundidad o dinámicas de grupo) e indirectas.",
+                fuente: "Tema 3 - Esquema de Técnicas Cualitativas",
+                origen: "Microtest Tema 3"
+            },
+            {
+                id: "T3_Q4",
+                tema: "Tema 3: Técnicas de Obtención",
+                dificultad: "Análisis",
+                tipo: "unica",
+                enunciado: "En la investigación cuantitativa basada en encuestas, ¿cuál es el principal inconveniente operativo asociado a las encuestas telefónicas tradicionales o de correo postal?",
+                opciones: [
+                    "La dificultad de acceso y la baja tasa de respuesta completa por parte del encuestado, requiriendo incentivos promocionales.",
+                    "La imposibilidad absoluta de utilizar preguntas clasificatorias sociodemográficas.",
+                    "El coste cero de ejecución que devalúa la percepción de calidad del estudio.",
+                    "La prohibición legal de codificar las respuestas en formato numérico."
+                ],
+                correctas: [0],
+                explicacion: "El gran obstáculo de las encuestas telefónicas o postales radica en la dificultad de lograr que el encuestado responda a la totalidad de las preguntas, exigiendo incentivos como sorteos.",
+                fuente: "Tema 4 - Tipos de Encuestas",
+                origen: "Microtest Tema 3"
+            },
+            {
+                id: "T3_Q5",
+                tema: "Tema 3: Técnicas de Obtención",
+                dificultad: "Aplicación",
+                tipo: "unica",
+                enunciado: "¿Qué función cumplen las preguntas clasificatorias y de filtro en un cuestionario estructurado?",
+                opciones: [
+                    "Las de filtro seleccionan al perfil idóneo de la muestra; las clasificatorias (demográficas/socioeconómicas) permiten segmentar y realizar análisis cruzados.",
+                    "Medir la satisfacción emocional profunda mediante técnicas proyectivas complejas.",
+                    "Rellenar automáticamente las casillas vacías en el software estadístico EQS.",
+                    "Sustituir la necesidad de realizar un análisis factorial confirmatorio."
+                ],
+                correctas: [0],
+                explicacion: "Las preguntas de filtro aseguran la idoneidad del informante, mientras que las clasificatorias (edad, género, ingresos) permiten la segmentación detallada en el informe.",
+                fuente: "Tema 4 - Diseño de Cuestionarios",
+                origen: "Microtest Tema 3"
+            },
+            {
+                id: "T3_Q6",
+                tema: "Tema 3: Técnicas de Obtención",
+                dificultad: "Comprensión",
+                tipo: "multiple",
+                enunciado: "Señale las ventajas metodológicas características de la utilización de la escala de Likert en los cuestionarios cuantitativos: (Seleccione todas las opciones correctas)",
+                opciones: [
+                    "Facilidad de diseño y aplicación.",
+                    "Gran sencillez de comprensión y contestación para los encuestados.",
+                    "Su sistema de graduación facilita que los encuestados se decanten por un nivel claro de acuerdo o desacuerdo.",
+                    "Eliminación absoluta de cualquier tipo de sesgo de deseabilidad social."
+                ],
+                correctas: [0, 1, 2],
+                explicacion: "La escala de Likert destaca por su diseño simple, facilidad de respuesta y graduación clara. No elimina por completo los sesgos de deseabilidad social, que son inherentes a la autoeclaración humana.",
+                fuente: "Tema 4 - Escalas de Medición",
+                origen: "Microtest Tema 3"
+            },
+            {
+                id: "T3_Q7",
+                tema: "Tema 3: Técnicas de Obtención",
+                dificultad: "Aplicación",
+                tipo: "unica",
+                enunciado: "¿Qué diferencia existe entre un muestreo probabilístico y uno no probabilístico respecto a la selección de los participantes?",
+                opciones: [
+                    "En el probabilístico, la selección es aleatoria y se conocen las probabilidades matemáticas de elección; en el no probabilístico, dichas probabilidades no se conocen.",
+                    "El probabilístico es exclusivamente cualitativo; el no probabilístico requiere millones de sujetos.",
+                    "El probabilístico se realiza sin ningún tipo de criterio técnico; el no probabilístico es infalible.",
+                    "No existe diferencia teórica en la estimación del error muestral."
+                ],
+                correctas: [0],
+                explicacion: "La distinción metodológica clave radica en el conocimiento previo de la probabilidad matemática de selección de cada unidad muestral en el enfoque probabilístico frente al no probabilístico.",
+                fuente: "Tema 5 - Tipos de Muestreo",
+                origen: "Microtest Tema 3"
+            },
+            {
+                id: "T3_Q8",
+                tema: "Tema 3: Técnicas de Obtención",
+                dificultad: "Comprensión",
+                tipo: "multiple",
+                enunciado: "Identifique métodos de muestreo que pertenezcan estrictamente a la categoría de muestreo probabilístico: (Seleccione todas las opciones correctas)",
+                opciones: [
+                    "Aleatorio simple y aleatorio con reemplazamiento.",
+                    "Muestreo sistemático y estratificado aleatorio.",
+                    "Muestreo por conglomerados y bietápico o politápico.",
+                    "Muestreo por conveniencia y bola de nieve."
+                ],
+                correctas: [0, 1, 2],
+                explicacion: "El aleatorio simple, sistemático, estratificado, por conglomerados y politápico son probabilísticos. Conveniencia y bola de nieve pertenecen a las técnicas no probabilísticas.",
+                fuente: "Tema 5 - Esquema de Muestreo",
+                origen: "Microtest Tema 3"
+            },
+            {
+                id: "T3_Q9",
+                tema: "Tema 3: Técnicas de Obtención",
+                dificultad: "Análisis",
+                tipo: "unica",
+                enunciado: "Si una investigación comercial integra datos numéricos cuantitativos con experiencias personales cualitativas porque ninguno de los dos enfoques por separado explica suficientemente el problema, ¿ante qué tipo de investigación nos encontramos?",
+                opciones: [
+                    "Investigación con técnicas mixtas (enfoque mixto integrado).",
+                    "Investigación exclusivamente experimental de laboratorio.",
+                    "Auditoría de marketing financiero estricto.",
+                    "Investigación netnográfica pasiva en redes sociales."
+                ],
+                correctas: [0],
+                explicacion: "El enfoque mixto integra datos numéricos y vivencias cualitativas cuando la complejidad del problema supera la capacidad explicativa de una sola metodología aislada.",
+                fuente: "Tema 4 y Tema 8 - Técnicas Mixtas",
+                origen: "Microtest Tema 3"
+            },
+            {
+                id: "T3_Q10",
+                tema: "Tema 3: Técnicas de Obtención",
+                dificultad: "Comprensión",
+                tipo: "unica",
+                enunciado: "¿Qué objetivo persigue el proceso de depuración de respuestas faltantes (*missing values*) tras aplicar un cuestionario?",
+                opciones: [
+                    "Decidir el tratamiento analítico adecuado cuando la muestra presenta casillas vacías o encuestas incompletas antes de procesarlas en software como SPSS o EQS.",
+                    "Aumentar el número total de encuestados falsificando registros faltantes.",
+                    "Ocultar los errores de los encuestadores ante la dirección general.",
+                    "Eliminar la necesidad de calcular el coeficiente Alfa de Cronbach."
+                ],
+                correctas: [0],
+                explicacion: "Gestionar las respuestas faltantes es una etapa analítica crítica para asegurar que la matriz de datos en programas estadísticos esté completa o tratada bajo criterios metodológicos válidos.",
+                fuente: "Tema 4 y Tema 5 - Tratamiento de Datos",
+                origen: "Elaborada para Maestría"
+            },
+
+            // TEMA 4: ANÁLISIS E INTERPRETACIÓN DE DATOS (CLÁSICO Y MULTIVARIANTE)
+            {
+                id: "T4_Q1",
+                tema: "Tema 4: Análisis e Interpretación de Datos",
+                dificultad: "Aplicación",
+                tipo: "unica",
+                enunciado: "Para evaluar la fiabilidad y consistencia interna de las distintas escalas que componen los constructos de un modelo de estudio, ¿qué indicador estadístico clásico se utiliza de referencia principal?",
+                opciones: [
+                    "El coeficiente Alfa de Cronbach.",
+                    "El test de Kolmogorov-Smirnov.",
+                    "El coeficiente de correlación de Pearson.",
+                    "La prueba de Chi-cuadrada de independencia."
+                ],
+                correctas: [0],
+                explicacion: "El Alfa de Cronbach es el estadístico estándar empleado para medir la fiabilidad y consistencia interna de las escalas psicométricas y constructos en investigación de mercados.",
+                fuente: "Tema 6 y Tema 7 - Fiabilidad de Escalas",
+                origen: "Microtest Tema 4"
+            },
+            {
+                id: "T4_Q2",
+                tema: "Tema 4: Análisis e Interpretación de Datos",
+                dificultad: "Comprensión",
+                tipo: "multiple",
+                enunciado: "Señale los pasos metodológicos estándar requeridos para evaluar la fiabilidad y validez de las escalas que componen los constructos de un modelo de investigación avanzada: (Seleccione todas las opciones correctas)",
+                opciones: [
+                    "Realizar el test de Kolmogorov-Smirnov para verificar normalidad en los ítems.",
+                    "Desarrollar un análisis factorial exploratorio y un análisis factorial confirmatorio.",
+                    "Analizar la validez discriminante para confirmar que los constructos miden aspectos distintos.",
+                    "Eliminar obligatoriamente todas las variables latentes sin realizar contraste empírico."
+                ],
+                correctas: [0, 1, 2],
+                explicacion: "El proceso metodológico completo incluye Kolmogorov-Smirnov, análisis factorial exploratorio, confirmatorio y evaluación de la validez discriminante para asegurar que los constructos no midan lo mismo.",
+                fuente: "Tema 6 - Validación y Análisis Factorial",
+                origen: "Microtest Tema 4"
+            },
+            {
+                id: "T4_Q3",
+                tema: "Tema 4: Análisis e Interpretación de Datos",
+                dificultad: "Aplicación",
+                tipo: "unica",
+                enunciado: "¿Qué diferencia analítica existe entre los métodos de dependencia y los métodos de interdependencia en el análisis multivariante?",
+                opciones: [
+                    "Los de dependencia determinan relaciones entre variables independientes y dependientes; los de interdependencia buscan patrones o estructuras entre variables o clientes sin definir previamente variables explicadas.",
+                    "Los de dependencia son cualitativos; los de interdependencia son netamente financieros.",
+                    "Los de dependencia no requieren software estadístico; los de interdependencia exigen programación avanzada en lenguaje C.",
+                    "No existe distinción metodológica en el tratamiento informático."
+                ],
+                correctas: [0],
+                explicacion: "Los métodos de dependencia (como regresión o ANOVA) relacionan variables independientes con dependientes; los de interdependencia (como análisis de conglomerados o factorial) buscan patrones estructurales globales.",
+                fuente: "Tema 7 - Análisis Multivariante",
+                origen: "Microtest Tema 4"
+            },
+            {
+                id: "T4_Q4",
+                tema: "Tema 4: Análisis e Interpretación de Datos",
+                dificultad: "Comprensión",
+                tipo: "multiple",
+                enunciado: "Identifique pruebas estadísticas bivariantes utilizadas comúnmente para probar asociaciones o correlaciones entre variables en función de su naturaleza métrica u ordinal: (Seleccione todas las opciones correctas)",
+                opciones: [
+                    "El coeficiente de correlación de Pearson (para variables métricas).",
+                    "El coeficiente de correlación de rangos (para variables ordinales).",
+                    "La prueba de Chi-cuadrada (para variables no métricas y tablas de contingencia).",
+                    "El análisis de conglomerados jerárquicos multivariantes."
+                ],
+                correctas: [0, 1, 2],
+                explicacion: "Pearson evalúa variables métricas, el de rangos evalúa ordinales, y Chi-cuadrada evalúa asociación en variables no métricas. El conglomerado jerárquico es multivariante de interdependencia, no bivariante simple.",
+                fuente: "Tema 7 - Análisis Bivariante",
+                origen: "Microtest Tema 4"
+            },
+            {
+                id: "T4_Q5",
+                tema: "Tema 4: Análisis e Interpretación de Datos",
+                dificultad: "Análisis",
+                tipo: "unica",
+                enunciado: "¿Para qué sirve específicamente la técnica multivariante de análisis de conglomerados (*Cluster Analysis*) en marketing?",
+                opciones: [
+                    "Para agrupar a clientes o individuos con características similares en segmentos homogéneos.",
+                    "Para resumir numerosas variables de una encuesta en pocas dimensiones factoriales.",
+                    "Para visualizar relaciones gráficas de correspondencia entre categorías nominales.",
+                    "Para calcular el coeficiente Alfa de Cronbach de una escala Likert."
+                ],
+                correctas: [0],
+                explicacion: "El análisis de conglomerados (cluster) es una técnica de interdependencia orientada a segmentar y agrupar observaciones (clientes) con perfiles homogéneos.",
+                fuente: "Tema 7 - Técnicas Multivariantes de Interdependencia",
+                origen: "Microtest Tema 4"
+            },
+            {
+                id: "T4_Q6",
+                tema: "Tema 4: Análisis e Interpretación de Datos",
+                dificultad: "Comprensión",
+                tipo: "unica",
+                enunciado: "¿Qué función cumple el análisis de componentes principales o análisis factorial dentro del análisis multivariante?",
+                opciones: [
+                    "Resumir y sintetizar numerosas variables observadas en un número menor de dimensiones o factores latentes subyacentes.",
+                    "Predecir las ventas futuras mediante modelos econométricos temporales.",
+                    "Verificar si una muestra de datos sigue una distribución normal perfecta.",
+                    "Rellenar automáticamente las casillas vacías de una base de datos incompleta."
+                ],
+                correctas: [0],
+                explicacion: "El análisis factorial reduce la dimensionalidad de un conjunto amplio de variables correlacionadas, agrupándolas en factores o dimensiones latentes explicativas.",
+                fuente: "Tema 7 - Análisis Factorial",
+                origen: "Microtest Tema 4"
+            },
+            {
+                id: "T4_Q7",
+                tema: "Tema 4: Análisis e Interpretación de Datos",
+                dificultad: "Aplicación",
+                tipo: "unica",
+                enunciado: "Al presentar los resultados de una investigación en un informe ejecutivo para la dirección, ¿qué principio de visualización y redacción debe imperar?",
+                opciones: [
+                    "Ser conciso y completo, vinculando cada gráfico y hallazgo con los objetivos de la investigación de manera objetiva y sin ocultar resultados desfavorables.",
+                    "Ocultar los datos negativos para asegurar que la presentación comercial sea siempre atractiva y festiva.",
+                    "Extenderse detalladamente en explicaciones estadísticas complejas para impresionar a la gerencia.",
+                    "Basar las conclusiones exclusivamente en la intuición y experiencia pasada del directivo."
+                ],
+                correctas: [0],
+                explicacion: "Los informes deben ser concisos, completos, basados en hechos objetivos, vinculados a los objetivos y sin distorsionar ni ocultar hallazgos desfavorables.",
+                fuente: "Tema 9 - Informes de Investigación",
+                origen: "Microtest Tema 4"
+            },
+            {
+                id: "T4_Q8",
+                tema: "Tema 4: Análisis e Interpretación de Datos",
+                dificultad: "Comprensión",
+                tipo: "multiple",
+                enunciado: "Indique los recursos gráficos recomendados en la visualización de resultados según la naturaleza de la información que se desea mostrar: (Seleccione todas las opciones correctas)",
+                opciones: [
+                    "Gráfico de líneas para mostrar la evolución temporal (ej. reservas mensuales).",
+                    "Gráfico de barras para comparar categorías (ej. quejas por tipo de problema).",
+                    "Gráfico de barras agrupadas para comparar múltiples grupos.",
+                    "Diagrama de flujo de código fuente para mostrar bases de datos."
+                ],
+                correctas: [0, 1, 2],
+                explicacion: "Líneas para evolución temporal, barras para comparación categórica simple y barras agrupadas para comparación multisectorial son estándares de visualización comercial.",
+                fuente: "Tema 9 - Visualización de Datos",
+                origen: "Microtest Tema 4"
+            },
+            {
+                id: "T4_Q9",
+                tema: "Tema 4: Análisis e Interpretación de Datos",
+                dificultad: "Análisis",
+                tipo: "unica",
+                enunciado: "Si al analizar los datos de una agencia turística online se detecta que los clientes con problemas de reservas no resueltos muestran menor satisfacción, ¿qué implicación práctica y analítica se extrae?",
+                opciones: [
+                    "Permite vincular la gestión de reclamos con la satisfacción, aunque la asociación estadística observada no demuestra por sí sola una relación de causalidad unívoca.",
+                    "Demuestra matemáticamente que la empresa quebrará en el próximo trimestre fiscal.",
+                    "Obliga a eliminar la variable de satisfacción del modelo de ecuaciones estructurales.",
+                    "Confirma que el software EQS contenía errores de codificación en las casillas vacías."
+                ],
+                correctas: [0],
+                explicacion: "El análisis estadístico identifica asociaciones y patrones relacionales con la satisfacción, pero en investigación comercial se debe recordar permanentemente que la correlación o asociación no demuestra causalidad absoluta por sí misma.",
+                fuente: "Tema 7 y Tema 9 - Interpretación de Resultados",
+                origen: "Microtest Tema 4"
+            },
+            {
+                id: "T4_Q10",
+                tema: "Tema 4: Análisis e Interpretación de Datos",
+                dificultad: "Comprensión",
+                tipo: "unica",
+                enunciado: "¿Qué función cumple el escalamiento multidimensional (*Multidimensional Scaling*) dentro del análisis multivariante de interdependencia?",
+                opciones: [
+                    "Representar gráficamente las similitudes o diferencias perceptuales entre varios elementos o marcas en un espacio espacial reducido.",
+                    "Calcular la elasticidad precio de la demanda en mercados de productos masivos.",
+                    "Verificar la normalidad univariante de los ítems mediante la prueba de Kolmogorov.",
+                    "Codificar automáticamente las respuestas abiertas de una encuesta postal."
+                ],
+                correctas: [0],
+                explicacion: "El escalamiento multidimensional permite visualizar cómo perciben los clientes a diversas agencias, marcas o productos situándolos en un mapa perceptual de proximidad.",
+                fuente: "Tema 7 - Escalamiento Multidimensional",
+                origen: "Microtest Tema 4"
+            },
+
+            // TEMA 5: NUEVOS ÁMBITOS, DIGITALIZACIÓN, NEUROMARKETING Y ÉTICA
+            {
+                id: "T5_Q1",
+                tema: "Tema 5: Nuevos Ámbitos y Ética",
+                dificultad: "Aplicación",
+                tipo: "unica",
+                enunciado: "¿Cuáles son las dimensiones características que definen el concepto de Big Data aplicado a la investigación de mercados actual?",
+                opciones: [
+                    "Volumen masivo de datos, diversidad o variedad de procedencias y velocidad de actualización casi instantánea.",
+                    "Exclusividad de datos impresos en papel, lentitud de procesamiento analítico y bajo coste de almacenamiento.",
+                    "Uso exclusivo de encuestas postales tradicionales sin soporte digital.",
+                    "Limitación a datos estrictamente contables de pasivos financieros."
+                ],
+                correctas: [0],
+                explicacion: "El Big Data se caracteriza analíticamente por las tres 'V' principales: Volumen, Variedad y Velocidad de actualización instantánea de múltiples fuentes digitales.",
+                fuente: "Tema 8 y Tema 10 - Big Data y Entornos Digitales",
+                origen: "Microtest Tema 5"
+            },
+            {
+                id: "T5_Q2",
+                tema: "Tema 5: Nuevos Ámbitos y Ética",
+                dificultad: "Comprensión",
+                tipo: "multiple",
+                enunciado: "Señale las tecnologías y técnicas más utilizadas para ejecutar estudios de Neuromarketing orientados a medir respuestas neurofisiológicas e inconscientes: (Seleccione todas las opciones correctas)",
+                opciones: [
+                    "Electroencefalografía (EEG) para medir variaciones eléctricas neuronales.",
+                    "Eye Tracking para captar el movimiento ocular y puntos de fijación visual.",
+                    "Resonancia Magnética Funcional (fMRI) para analizar el flujo y nivel de oxígeno sanguíneo cerebral.",
+                    "Encuestas postales de respuesta demorada de 30 días."
+                ],
+                correctas: [0, 1, 2],
+                explicacion: "EEG, Eye Tracking y fMRI son tecnologías biométricas y neurológicas estándar en neuromarketing. Las encuestas postales son métodos cuantitativos tradicionales de encuesta, no tecnologías de neuromarketing.",
+                fuente: "Tema 8 - Tecnologías de Neuromarketing",
+                origen: "Microtest Tema 5"
+            },
+            {
+                id: "T5_Q3",
+                tema: "Tema 5: Nuevos Ámbitos y Ética",
+                dificultad: "Aplicación",
+                tipo: "unica",
+                enunciado: "¿En qué consiste fundamentalmente la técnica de investigación denominada Netnografía?",
+                opciones: [
+                    "En la adaptación de la etnografía tradicional al estudio de las culturas y comunidades virtuales que interactúan a través de internet y redes sociales.",
+                    "En el análisis automatizado de los niveles de sudoración mediante sensores EDA en laboratorio.",
+                    "En la realización de llamadas telefónicas masivas automatizadas por inteligencia artificial.",
+                    "En la auditoría contable de los estados financieros de empresas tecnológicas."
+                ],
+                correctas: [0],
+                explicacion: "La netnografía aplica los principios metodológicos de la etnografía antropológica al análisis de comunidades y comportamientos en internet y redes sociales.",
+                fuente: "Tema 8 - Netnografía",
+                origen: "Microtest Tema 5"
+            },
+            {
+                id: "T5_Q4",
+                tema: "Tema 5: Nuevos Ámbitos y Ética",
+                dificultad: "Comprensión",
+                tipo: "unica",
+                enunciado: "¿Qué comprende y abarca el concepto de *Mobile Market Research* en la investigación comercial contemporánea?",
+                opciones: [
+                    "El uso de metodologías cualitativas y cuantitativas online para recoger información de los participantes a través de dispositivos móviles (smartphones, tablets), incluyendo recolección de datos pasiva.",
+                    "El desplazamiento físico de encuestadores a zonas rurales mediante vehículos motorizados.",
+                    "La prohibición absoluta de utilizar cuestionarios digitales en ordenadores portátiles.",
+                    "El análisis exclusivo de las llamadas telefónicas de voz fija analógica."
+                ],
+                correctas: [0],
+                explicacion: "El Mobile Market Research aprovecha los dispositivos móviles para investigación activa y pasiva (ubicaciones, uso de apps, navegación), optimizando la captación de datos en tiempo real.",
+                fuente: "Tema 8 - Mobile Market Research",
+                origen: "Microtest Tema 5"
+            },
+            {
+                id: "T5_Q5",
+                tema: "Tema 5: Nuevos Ámbitos y Ética",
+                dificultad: "Análisis",
+                tipo: "unica",
+                enunciado: "¿Cuál es el propósito fundamental de realizar una Auditoría de Marketing dentro de la gestión estratégica de una organización?",
+                opciones: [
+                    "Realizar un examen exhaustivo, sistemático, independiente y periódico del entorno, objetivos, estrategias y actividades de marketing para detectar áreas problemáticas y oportunidades.",
+                    "Auditar las nóminas y retenciones fiscales del departamento de recursos humanos.",
+                    "Sustituir de forma permanente los sistemas de información transaccionales operativos.",
+                    "Certificar la contabilidad de costes logísticos de transporte internacional."
+                ],
+                correctas: [0],
+                explicacion: "La auditoría de marketing es un examen sistemático e integral de la posición y estrategias comerciales de la empresa frente a su entorno para detectar debilidades y optimizar resultados.",
+                fuente: "Tema 10 - Auditoría de Marketing",
+                origen: "Microtest Tema 5"
+            },
+            {
+                id: "T5_Q6",
+                tema: "Tema 5: Nuevos Ámbitos y Ética",
+                dificultad: "Comprensión",
+                tipo: "multiple",
+                enunciado: "Señale las características metodológicas esenciales que deben regir una Auditoría de Marketing profesional: (Seleccione todas las opciones correctas)",
+                opciones: [
+                    "Debe ser exhaustiva y abarcar todas las actividades comerciales de la empresa.",
+                    "Debe ser sistemática, desarrollándose de forma secuencial desde lo genérico hacia lo específico.",
+                    "Debe ser independiente, evitando sesgos internos en la evaluación.",
+                    "Debe basarse exclusivamente en la intuición de los directivos más antiguos."
+                ],
+                correctas: [0, 1, 2],
+                explicacion: "La auditoría exige exhaustividad, sistematicidad secuencial e independencia directiva externa o neutral. La intuición sin datos contradice el rigor de la auditoría.",
+                fuente: "Tema 10 - Características de la Auditoría",
+                origen: "Microtest Tema 5"
+            },
+            {
+                id: "T5_Q7",
+                tema: "Tema 5: Nuevos Ámbitos y Ética",
+                dificultad: "Aplicación",
+                tipo: "unica",
+                enunciado: "¿Por qué es crucial la ética y la responsabilidad social en el diseño y ejecución de la investigación de mercados?",
+                opciones: [
+                    "Porque las prácticas no éticas destruyen la confianza del consumidor, vulneran la privacidad, invalidan la credibilidad de los datos y generan graves consecuencias reputacionales y legales para la empresa.",
+                    "Porque las normativas internacionales exigen regalar productos a todos los encuestados.",
+                    "Porque la ética es un requisito estético sin impacto en los resultados comerciales.",
+                    "Porque permite eliminar el cálculo del error muestral en las encuestas."
+                ],
+                correctas: [0],
+                explicacion: "La ética empresarial y la investigación responsable protegen la privacidad y confianza del consumidor, evitando crisis reputacionales y la invalidez de los estudios por prácticas deshonestas.",
+                fuente: "Tema 11 - Ética y Responsabilidad Social",
+                origen: "Microtest Tema 5"
+            },
+            {
+                id: "T5_Q8",
+                tema: "Tema 5: Nuevos Ámbitos y Ética",
+                dificultad: "Comprensión",
+                tipo: "multiple",
+                enunciado: "Indique métricas comerciales clave utilizadas para evaluar la rentabilidad y efectividad de las campañas digitales y la captación de clientes en entornos online: (Seleccione todas las opciones correctas)",
+                opciones: [
+                    "Coste por Lead (CPA o coste de adquisición de clientes potenciales).",
+                    "Número total de visitas y patrones de comportamiento en la página web.",
+                    "Tasas de conversión y análisis del embudo de ventas digital.",
+                    "Número de páginas impresas en el archivo físico corporativo."
+                ],
+                correctas: [0, 1, 2],
+                explicacion: "Coste por lead, visitas web y tasas de conversión son métricas analíticas estándar del marketing digital y mobile research. La impresión en papel no es una métrica digital.",
+                fuente: "Tema 10 - Métricas de Marketing",
+                origen: "Microtest Tema 5"
+            },
+            {
+                id: "T5_Q9",
+                tema: "Tema 5: Nuevos Ámbitos y Ética",
+                dificultad: "Análisis",
+                tipo: "unica",
+                enunciado: "Si una compañía de investigación utiliza técnicas de seguimiento pasivo mediante *Mobile Market Research* sin informar adecuadamente al usuario ni obtener su consentimiento explícito, ¿qué principio deontológico fundamental está vulnerando?",
+                opciones: [
+                    "El principio de transparencia, consentimiento informado y privacidad del consumidor regulado en los códigos de conducta de investigación.",
+                    "El principio de cálculo del Alfa de Cronbach para muestras masivas.",
+                    "El principio de asignación aleatoria de cuotas en el muestreo estratificado.",
+                    "El principio de visualización mediante gráficos de líneas temporales."
+                ],
+                correctas: [0],
+                explicacion: "El seguimiento pasivo sin consentimiento viola directamente las normativas éticas de privacidad (como GDPR) y los códigos de conducta deontológicos de la investigación comercial.",
+                fuente: "Tema 8 y Tema 11 - Ética en Mobile Research",
+                origen: "Elaborada para Maestría"
+            },
+            {
+                id: "T5_Q10",
+                tema: "Tema 5: Nuevos Ámbitos y Ética",
+                dificultad: "Comprensión",
+                tipo: "unica",
+                enunciado: "¿Qué función cumple el establecimiento de un código de conducta deontológico en las agencias de investigación de mercados?",
+                opciones: [
+                    "Establecer pautas obligatorias de integridad profesional, protección de datos y respeto al entrevistado para regular la actividad del sector.",
+                    "Garantizar que todas las empresas obtengan beneficios financieros extraordinarios.",
+                    "Evitar el uso de software estadístico avanzado como SPSS o EQS.",
+                    "Sustituir la necesidad de redactar informes ejecutivos para la alta dirección."
+                ],
+                correctas: [0],
+                explicacion: "El código deontológico regula la integridad profesional, el secreto estadístico y la protección del sujeto investigado, asegurando la honorabilidad de la práctica investigadora.",
+                fuente: "Tema 11 - Códigos Deontológicos",
+                origen: "Microtest Tema 5"
+            }
+        ];
+
+        let currentExam = [];
+        let userAnswers = {};
+
+        // Helper: Shuffle array
+        function shuffleArray(array) {
+            let currentIndex = array.length, randomIndex;
+            while (currentIndex !== 0) {
+                randomIndex = Math.floor(Math.random() * currentIndex);
+                currentIndex--;
+                [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]];
+            }
+            return array;
+        }
+
+        function startExam() {
+            generateExamQuestions();
+            document.getElementById('start-view').classList.add('hidden');
+            document.getElementById('quiz-view').classList.remove('hidden');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function generateExamQuestions() {
+            // Select 20 unique random questions from the 60 question bank
+            let pool = [...questionBank];
+            shuffleArray(pool);
+            currentExam = pool.slice(0, 20);
+            userAnswers = {};
+            renderQuiz();
+        }
+
+        function renderQuiz() {
+            const container = document.getElementById('questions-container');
+            container.innerHTML = '';
+
+            currentExam.forEach((q, index) => {
+                let card = document.createElement('div');
+                card.className = 'question-card';
+                card.id = `q-card-${index}`;
+
+                let header = document.createElement('div');
+                header.className = 'question-header';
+                header.innerHTML = `
+                    <span>Pregunta ${index + 1} de 20</span>
+                    <div>
+                        <span class="badge badge-tema">${q.tema}</span>
+                        <span class="badge badge-dif">${q.dificultad}</span>
+                        <span class="badge badge-tipo">${q.tipo === 'unica' ? 'Única Respuesta' : 'Respuesta Múltiple'}</span>
+                    </div>
+                `;
+                card.appendChild(header);
+
+                let text = document.createElement('div');
+                text.className = 'question-text';
+                text.textContent = q.enunciado;
+                card.appendChild(text);
+
+                let optionsList = document.createElement('div');
+                optionsList.className = 'options-list';
+
+                // Shuffle options while keeping track of original indices
+                let optionIndices = q.opciones.map((_, i) => i);
+                shuffleArray(optionIndices);
+
+                optionIndices.forEach(origIdx => {
+                    let optLabel = document.createElement('label');
+                    optLabel.className = 'option-label';
+
+                    let input = document.createElement('input');
+                    input.type = q.tipo === 'unica' ? 'radio' : 'checkbox';
+                    input.name = `question_${index}`;
+                    input.value = origIdx;
+                    input.onchange = () => handleOptionChange(index, origIdx, q.tipo, input);
+
+                    let span = document.createElement('span');
+                    span.textContent = q.opciones[origIdx];
+
+                    optLabel.appendChild(input);
+                    optLabel.appendChild(span);
+                    optionsList.appendChild(optLabel);
+                });
+
+                card.appendChild(optionsList);
+
+                // Feedback box for review mode later
+                let feedbackBox = document.createElement('div');
+                feedbackBox.className = 'feedback-box';
+                feedbackBox.id = `feedback_${index}`;
+                card.appendChild(feedbackBox);
+
+                container.appendChild(card);
+            });
+            updateProgress();
+        }
+
+        function handleOptionChange(qIndex, optIdx, type, inputElement) {
+            if (!userAnswers[qIndex]) {
+                userAnswers[qIndex] = [];
+            }
+
+            if (type === 'unica') {
+                userAnswers[qIndex] = [optIdx];
+            } else {
+                if (inputElement.checked) {
+                    if (!userAnswers[qIndex].includes(optIdx)) {
+                        userAnswers[qIndex].push(optIdx);
+                    }
+                } else {
+                    userAnswers[qIndex] = userAnswers[qIndex].filter(item => item !== optIdx);
+                }
+            }
+
+            document.getElementById(`q-card-${qIndex}`).classList.add('answered');
+            updateProgress();
+        }
+
+        function updateProgress() {
+            let answeredCount = Object.keys(userAnswers).filter(k => userAnswers[k].length > 0).length;
+            document.getElementById('progress-counter').textContent = `Respondidas: ${answeredCount} / 20`;
+            
+            let warning = document.getElementById('unanswered-warning');
+            if (answeredCount < 20) {
+                warning.textContent = `Faltan ${20 - answeredCount} preguntas por responder.`;
+            } else {
+                warning.textContent = `¡Todas las preguntas respondidas!`;
+            }
+        }
+
+        function confirmSubmit() {
+            let answeredCount = Object.keys(userAnswers).filter(k => userAnswers[k].length > 0).length;
+            if (answeredCount < 20) {
+                if (!confirm(`Tienes ${20 - answeredCount} preguntas sin responder. ¿Estás seguro de enviar el examen ahora? Las preguntas sin responder se calificarán como incorrectas.`)) {
+                    return;
+                }
+            } else {
+                if (!confirm("¿Estás seguro de enviar tu examen para calificación?")) {
+                    return;
+                }
+            }
+            gradeExam();
+        }
+
+        function gradeExam() {
+            let correctCount = 0;
+            let incorrectCount = 0;
+            let unansweredCount = 0;
+            let topicStats = {};
+
+            currentExam.forEach((q, index) => {
+                if (!topicStats[q.tema]) {
+                    topicStats[q.tema] = { total: 0, correct: 0 };
+                }
+                topicStats[q.tema].total++;
+
+                let userAns = userAnswers[index] || [];
+                let correctAns = q.correctas;
+
+                let isCorrect = false;
+                if (userAns.length > 0) {
+                    // Sort both arrays to compare sets accurately
+                    let sortedUser = [...userAns].sort((a,b) => a - b);
+                    let sortedCorrect = [...correctAns].sort((a,b) => a - b);
+                    
+                    if (sortedUser.length === sortedCorrect.length && sortedUser.every((val, i) => val === sortedCorrect[i])) {
+                        isCorrect = true;
+                    }
+                }
+
+                let card = document.getElementById(`q-card-${index}`);
+                let feedback = document.getElementById(`feedback_${index}`);
+                feedback.style.display = 'block';
+
+                // Disable inputs
+                let inputs = card.querySelectorAll('input');
+                inputs.forEach(inp => inp.disabled = true);
+
+                if (isCorrect) {
+                    correctCount++;
+                    topicStats[q.tema].correct++;
+                    card.classList.add('result-correct');
+                    feedback.className = 'feedback-box correct';
+                    feedback.innerHTML = `<strong>¡Correcto!</strong><br>${q.explicacion}<br><br><em>Fuente: ${q.fuente}</em>`;
+                } else {
+                    if (userAns.length === 0) {
+                        unansweredCount++;
+                    } else {
+                        incorrectCount++;
+                    }
+                    card.classList.add('result-incorrect');
+                    feedback.className = 'feedback-box incorrect';
+                    
+                    // Build correct options text for feedback
+                    let correctTexts = q.correctas.map(idx => `• ${q.opciones[idx]}`).join('<br>');
+                    feedback.innerHTML = `<strong>Incorrecto / Sin responder.</strong><br><strong>Opciones correctas:</strong><br>${correctTexts}<br><br>${q.explicacion}<br><br><em>Fuente: ${q.fuente}</em>`;
+                }
+            });
+
+            // Calculate Score on 10 scale
+            let score10 = (correctCount / 20) * 10;
+            let percent = (correctCount / 20) * 100;
+
+            // Populate Results Dashboard
+            document.getElementById('res-score').textContent = `${score10.toFixed(1)} / 10`;
+            document.getElementById('res-percent').textContent = `${percent.toFixed(0)}%`;
+            document.getElementById('res-counts').textContent = `${correctCount} / 20`;
+
+            // Topic Breakdown
+            let breakdownContainer = document.getElementById('topic-breakdown-container');
+            breakdownContainer.innerHTML = '';
+            for (let tema in topicStats) {
+                let stats = topicStats[tema];
+                let topicPercent = Math.round((stats.correct / stats.total) * 100);
+                let row = document.createElement('div');
+                row.className = 'topic-row';
+                row.innerHTML = `
+                    <span><strong>${tema}</strong></span>
+                    <span>${stats.correct} / ${stats.total} aciertos (${topicPercent}%)</span>
+                `;
+                breakdownContainer.appendChild(row);
+            }
+
+            // Move review container content
+            let reviewContainer = document.getElementById('review-container');
+            let quizContainer = document.getElementById('questions-container');
+            reviewContainer.innerHTML = quizContainer.innerHTML;
+
+            // Switch views
+            document.getElementById('quiz-view').classList.add('hidden');
+            document.getElementById('results-view').classList.remove('hidden');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function generateNewExam() {
+            document.getElementById('results-view').classList.add('hidden');
+            startExam();
+        }
+    </script>
+</body>
+</html>
